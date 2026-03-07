@@ -1,0 +1,52 @@
+@model TaskManager.Web.ViewModels.LoginViewModel
+
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-4">
+
+                <h3 class="text-center mb-4 fw-bold">Login</h3>
+
+                <form asp-action="Login" method="post" novalidate>
+                     <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+
+                        <input asp-for="Email"
+                               class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : (ViewData.ModelState.ContainsKey("Email") ? "is-valid" : ""))"
+                               placeholder="Enter your email" />
+
+                        <span asp-validation-for="Email" class="invalid-feedback"></span>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : (ViewData.ModelState.ContainsKey("Password") ? "is-valid" : ""))"
+                               placeholder="Enter your password" />
+
+                        <span asp-validation-for="Password" class="invalid-feedback"></span>
+                    </div>
+
+
+                    <button class="btn btn-primary w-100 mt-3">
+                        Login
+                    </button>
+
+                </form>
+
+                <p class="text-center mt-3">
+                    Don't have an account?
+                    <a asp-action="Register">Sign Up</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>

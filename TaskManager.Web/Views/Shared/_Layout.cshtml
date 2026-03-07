@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TaskManager</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+html, body {
+    height: 100%;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fb;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    flex: 1;
+}
+
+/* form styling */
+.form-control{
+    border-radius:10px;
+    padding:10px;
+}
+
+/* cards */
+.card{
+    border-radius:15px;
+}
+
+/* buttons */
+.btn{
+    border-radius:10px;
+    font-weight:500;
+}
+
+/* navbar */
+.navbar{
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* logo */
+.app-logo{
+    width:32px;
+    height:32px;
+    margin-right:8px;
+}
+
+/* footer */
+.footer{
+    background:white;
+    padding:15px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+
+        <!-- Logo + App Name -->
+        <a class="navbar-brand d-flex align-items-center"
+           asp-controller="Tasks"
+           asp-action="Index">
+
+            <img class="app-logo"
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HZS0IIT766Xq6hUSauECckvqxe-EJQPvybB9ZudCHw&s">
+
+            <span class="fw-semibold">TaskManager</span>
+
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+            <ul class="navbar-nav ms-auto">
+
+               @if (User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link " href="/Admin/Users">Users</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link " href="/Audit">Audit Logs</a>
+    </li>
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item me-2">
+        <a class="nav-link" asp-controller="Tasks" asp-action="Index">
+            Tasks
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <form asp-controller="Auth" asp-action="Logout" method="post">
+            <button type="submit" class="btn btn-danger">
+                Logout
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item me-2">
+        <a class="btn btn-outline-primary"
+           asp-controller="Auth"
+           asp-action="Login">
+            Login
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="btn btn-success"
+           asp-controller="Auth"
+           asp-action="Register">
+            Register
+        </a>
+    </li>
+}
+
+</ul>
+
+            
+
+        </div>
+
+    </div>
+</nav>
+
+</header>
+
+<<div class="container mt-4 flex-grow-1">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="footer bg-white border-top mt-auto py-3">
+    <div class="container text-center text-muted">
+        © 2026 TaskManager | Built with ASP.NET Core
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+setTimeout(function(){
+    let alerts = document.querySelectorAll(".alert");
+    alerts.forEach(a => a.remove());
+},4000);
+</script>
+@await RenderSectionAsync("Scripts", required:false)
+
+</body>
+</html>
