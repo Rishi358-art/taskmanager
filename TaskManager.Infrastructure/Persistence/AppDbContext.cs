@@ -43,25 +43,30 @@ public class AppDbContext : DbContext
 
         // TASK
         modelBuilder.Entity<TaskItem>(entity =>
-        {
-            entity.HasKey(t => t.Id);
+{
+    entity.ToTable("Tasks"); // explicit table name
 
-            entity.Property(t => t.Title)
-                  .IsRequired()
-                  .HasMaxLength(200);
+    entity.HasKey(t => t.Id);
 
-            entity.Property(t => t.Priority)
-                  .HasConversion<int>();
+    entity.Property(t => t.Id)
+          .HasColumnType("uuid")
+          .ValueGeneratedOnAdd(); // EF generates GUID
 
-            entity.Property(t => t.Status)   // you renamed to TaskState in enum
-                  .HasConversion<int>();
+    entity.Property(t => t.Title)
+          .IsRequired()
+          .HasMaxLength(200);
 
-            entity.HasOne(t => t.User)
-                  .WithMany(u => u.Tasks)
-                  .HasForeignKey(t => t.UserId)
-                  .OnDelete(DeleteBehavior.Cascade);
-        });
+    entity.Property(t => t.Priority)
+          .HasConversion<int>();
 
+    entity.Property(t => t.Status)
+          .HasConversion<int>();
+
+    entity.HasOne(t => t.User)
+          .WithMany(u => u.Tasks)
+          .HasForeignKey(t => t.UserId)
+          .OnDelete(DeleteBehavior.Cascade);
+});
         // TASK COMMENT
      modelBuilder.Entity<TaskComment>(entity =>
 {
